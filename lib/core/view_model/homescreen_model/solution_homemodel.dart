@@ -17,7 +17,9 @@ class SolutionHomeScreenViewModel extends BaseModel {
   String? word;
   int start = 0;
   int end = 0;
+  int lastLength = 0;
   bool isPause = false;
+  bool isStop = false;
 
   TtsState ttsState = TtsState.stopped;
 
@@ -36,36 +38,32 @@ class SolutionHomeScreenViewModel extends BaseModel {
       updateUI();
     });
     flutterTts.setProgressHandler((String text, int startOffset, int endOffset, String word) {
-      print("startOffset: ${startOffset} || endOffset: ${endOffset}");
-      print("pauseStart: ${pauseStart} || pauseEnd: ${pauseEnd}");
-      print("pauseStart: ${abc.substring(0, pauseStart + start)}");
-      print("text1: ${abc.substring(0, pauseStart + start)}");
-      print("highlight: ${word}");
-      print("text2: ${abc.substring(pauseStart + end)}");
-      print("All text: ${text}");
       start = startOffset;
       end = endOffset;
+      lastLength = word.length;
       this.word = word;
+      print("Start  ++++++   Pause : ${start + pause}");
       updateUI();
     });
   }
 
   textFromInput() {
-    /*print("&&&&&&&&&&&&&&&&&&&&&&&&&&${end}");
-    // print(word);
-    print('1jkghu1jhg1hghsrgretferte $start');
-    print('222222222222 $pause');
-    print('1jkghu1jhg1hghsrgretfexzvxbvcb cb vcn v nvnb n v nvnrte ${start + pause}');
-    print('6565765767 $end');*/
+    String pausedString = abc.substring(0, (start + pause));
+    if (isStop) {
+      print("-------------- ${pausedString.replaceRange((pausedString.length - (word ?? "").length), pausedString.length, "")}");
+    }
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: RichText(
         text: TextSpan(
           children: [
             TextSpan(
-                text: isPause == true ? abc.substring(0, start + pause) : abc.substring(0, start),
+                text: isPause == true
+                    ? isStop
+                        ? pausedString.replaceRange((pausedString.length - (word ?? "").length), pausedString.length, "")
+                        : pausedString /*.substring(0, pausedString.length - (word ?? "").length) */ : abc.substring(0, start),
                 style: const TextStyle(color: Colors.black, fontSize: 20)),
-            TextSpan(text: word ?? '', style: const TextStyle(backgroundColor: Colors.red, fontWeight: FontWeight.bold, fontSize: 20)),
+            TextSpan(text: word ?? "", style: const TextStyle(backgroundColor: Colors.red, fontWeight: FontWeight.bold, fontSize: 20)),
             TextSpan(text: abc.substring(pause + end), style: const TextStyle(color: Colors.black, fontSize: 20)),
           ],
         ),
@@ -74,55 +72,36 @@ class SolutionHomeScreenViewModel extends BaseModel {
   }
 
   speak(String text) async {
-    if (isPause) {
-      pause = end;
-    }
-    start = 0;
-    end = 0;
-    updateUI();
-    print('==============');
-    print('start $start');
-    print('pause $pauseStart');
-    print('end $end');
-    print("text: $text");
-    print('==============');
-
     await flutterTts.setLanguage("en-US");
     await flutterTts.setPitch(0.5);
     await flutterTts.speak(text);
+    isStop = false;
     await flutterTts.setVolume(0.5);
     updateUI();
   }
 
   stop() async {
+    isStop = true;
     await flutterTts.stop();
     ttsState = TtsState.stopped;
 
-    /* if (isPause) {
-      print('1111111111111111111111111111');
-      pauseStart = start;
-      pauseEnd = end;
-    } else if (pauseStart > 0) {
-      print('00000000000000000000000000000');
-      pauseStart = start;
-      pauseEnd = end;
-      print('else if start $pauseStart');
-      print('else if end $pauseEnd');
+    if (isPause) {
+      newEnd = abc.substring(pause + end);
+      pause = pause + end;
     } else {
-      print('222222222222222222222222');
-      pauseStart = start;
-      pauseEnd = end;
-    }*/
-
+      newEnd = abc.substring(end);
+      pause = end;
+    }
+    end = 0;
+    start = 0;
     isPause = true;
-    newEnd = abc.substring(end);
+    print("=========================     $pause");
     print("======= STOP: $newEnd");
-
-    print("0000000::$start");
-    print(end);
-    // start = 10;
-    /*start = 0;
-    end = 0;*/
+    print("Startttt::$start");
+    print("endddddd::$end");
+    print("ABD LENGTH : ${abc.length}");
+    print("NEW LENGTH : ${newEnd!.length}");
+    print("LENGTH : ${newEnd!.length + end}");
     updateUI();
   }
 }
