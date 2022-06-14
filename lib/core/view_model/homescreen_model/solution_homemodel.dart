@@ -60,7 +60,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
             TextSpan(
                 text: isPause == true
                     ? isStop
-                        ? pausedString.replaceRange((pausedString.length - (word ?? "").length), pausedString.length, "")
+                        ? pausedString.replaceRange((pausedString.length - (word ?? "").length), pausedString.length, '')
                         : pausedString /*.substring(0, pausedString.length - (word ?? "").length) */ : abc.substring(0, start),
                 style: const TextStyle(color: Colors.black, fontSize: 20)),
             TextSpan(text: word ?? "", style: const TextStyle(backgroundColor: Colors.red, fontWeight: FontWeight.bold, fontSize: 20)),
@@ -92,6 +92,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
       newEnd = abc.substring(end);
       pause = end;
     }
+
     end = 0;
     start = 0;
     isPause = true;
