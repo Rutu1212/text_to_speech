@@ -12,20 +12,14 @@ class SolutionHomeScreenViewModel extends BaseModel {
 
   String? newEnd;
   int pause = 0;
-  int pauseStart = 0;
-  int pauseEnd = 0;
   String? word;
   int start = 0;
+  int startNew = 0;
+  int endNew = 0;
   int end = 0;
-  int lastLength = 0;
   bool isPause = false;
-  bool isStop = false;
 
   TtsState ttsState = TtsState.stopped;
-
-  get isPlaying => ttsState == TtsState.playing;
-
-  get isStopped => ttsState == TtsState.stopped;
 
   initTts() {
     FlutterTts flutterTts = FlutterTts();
@@ -39,31 +33,26 @@ class SolutionHomeScreenViewModel extends BaseModel {
     });
     flutterTts.setProgressHandler((String text, int startOffset, int endOffset, String word) {
       start = startOffset;
+      startNew = startOffset;
+      endNew = endOffset;
       end = endOffset;
-      lastLength = word.length;
-      this.word = word;
-      print("Start  ++++++   Pause : ${start + pause}");
+      print("Start ::: $start");
+      print("endddddd::$end");
       updateUI();
     });
   }
 
   textFromInput() {
     String pausedString = abc.substring(0, (start + pause));
-    if (isStop) {
-      print("-------------- ${pausedString.replaceRange((pausedString.length - (word ?? "").length), pausedString.length, "")}");
-    }
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: RichText(
         text: TextSpan(
           children: [
+            TextSpan(text: isPause == true ? pausedString : abc.substring(0, start), style: const TextStyle(color: Colors.black, fontSize: 20)),
             TextSpan(
-                text: isPause == true
-                    ? isStop
-                        ? pausedString.replaceRange((pausedString.length - (word ?? "").length), pausedString.length, '')
-                        : pausedString /*.substring(0, pausedString.length - (word ?? "").length) */ : abc.substring(0, start),
-                style: const TextStyle(color: Colors.black, fontSize: 20)),
-            TextSpan(text: word ?? "", style: const TextStyle(backgroundColor: Colors.red, fontWeight: FontWeight.bold, fontSize: 20)),
+                text: abc.substring(start + pause, end + pause),
+                style: const TextStyle(backgroundColor: Colors.red, fontWeight: FontWeight.bold, fontSize: 20)),
             TextSpan(text: abc.substring(pause + end), style: const TextStyle(color: Colors.black, fontSize: 20)),
           ],
         ),
@@ -72,37 +61,31 @@ class SolutionHomeScreenViewModel extends BaseModel {
   }
 
   speak(String text) async {
+    end = 0;
+    start = 0;
+    if (isPause) {
+      pause = pause + endNew;
+    } else {
+      pause = endNew;
+    }
     await flutterTts.setLanguage("en-US");
-    await flutterTts.setPitch(0.5);
     await flutterTts.speak(text);
-    isStop = false;
     await flutterTts.setVolume(0.5);
+    await flutterTts.setSpeechRate(0.5);
     updateUI();
   }
 
   stop() async {
-    isStop = true;
+    isPause = true;
+    print("Start When Stop::: $start");
+    print("End when Stop ::$end");
     await flutterTts.stop();
     ttsState = TtsState.stopped;
-
     if (isPause) {
       newEnd = abc.substring(pause + end);
-      pause = pause + end;
     } else {
       newEnd = abc.substring(end);
-      pause = end;
     }
-
-    end = 0;
-    start = 0;
-    isPause = true;
-    print("=========================     $pause");
-    print("======= STOP: $newEnd");
-    print("Startttt::$start");
-    print("endddddd::$end");
-    print("ABD LENGTH : ${abc.length}");
-    print("NEW LENGTH : ${newEnd!.length}");
-    print("LENGTH : ${newEnd!.length + end}");
     updateUI();
   }
 }

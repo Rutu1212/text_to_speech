@@ -53,8 +53,11 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                             : await model.speak(model.isPause ? model.newEnd! : model.speak(model.abc));
                         setState(() {});
                       },
-                      icon: Icon(model.ttsState == TtsState.playing ? Icons.pause_circle_outline : Icons.play_circle_outline,
-                          size: 40, color: Colors.white),
+                      icon: Icon(
+                        model.ttsState == TtsState.playing ? Icons.pause_circle_outline : Icons.play_circle_outline,
+                        size: 40,
+                        color: Colors.white,
+                      ),
                     ),
                     /* IconButton(
                       splashColor: Colors.transparent,
