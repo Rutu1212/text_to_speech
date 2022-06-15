@@ -12,10 +12,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
 
   String? newEnd;
   int pause = 0;
-  String? word;
   int start = 0;
-  int startNew = 0;
-  int endNew = 0;
   int end = 0;
   bool isPause = false;
 
@@ -33,27 +30,35 @@ class SolutionHomeScreenViewModel extends BaseModel {
     });
     flutterTts.setProgressHandler((String text, int startOffset, int endOffset, String word) {
       start = startOffset;
-      startNew = startOffset;
-      endNew = endOffset;
       end = endOffset;
       print("Start ::: $start");
-      print("endddddd::$end");
+      print("Endddddd::$end");
       updateUI();
     });
   }
 
   textFromInput() {
     String pausedString = abc.substring(0, (start + pause));
+    print(
+        "%%%%%%%%%%%%%${abc.substring(start != 0 ? start + pause == start + pause ? (start + pause) : end + pause : isPause ? pause + start : 0, end + pause)}");
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: RichText(
         text: TextSpan(
           children: [
-            TextSpan(text: isPause == true ? pausedString : abc.substring(0, start), style: const TextStyle(color: Colors.black, fontSize: 20)),
+            TextSpan(text: isPause == true ? pausedString : abc.substring(0, start), style: const TextStyle(color: Colors.black, fontSize: 19)),
             TextSpan(
-                text: abc.substring(start + pause, end + pause),
-                style: const TextStyle(backgroundColor: Colors.red, fontWeight: FontWeight.bold, fontSize: 20)),
-            TextSpan(text: abc.substring(pause + end), style: const TextStyle(color: Colors.black, fontSize: 20)),
+                text: abc.substring(
+                    start != 0
+                        ? start + pause == start + pause
+                            ? (start + pause)
+                            : end + pause
+                        : isPause
+                            ? pause + start
+                            : 0,
+                    end + pause),
+                style: const TextStyle(backgroundColor: Colors.red, fontSize: 19)),
+            TextSpan(text: abc.substring(pause + end), style: const TextStyle(color: Colors.black, fontSize: 19)),
           ],
         ),
       ),
@@ -61,17 +66,17 @@ class SolutionHomeScreenViewModel extends BaseModel {
   }
 
   speak(String text) async {
+    if (isPause) {
+      pause = pause + end;
+    } else {
+      pause = end;
+    }
     end = 0;
     start = 0;
-    if (isPause) {
-      pause = pause + endNew;
-    } else {
-      pause = endNew;
-    }
     await flutterTts.setLanguage("en-US");
     await flutterTts.speak(text);
     await flutterTts.setVolume(0.5);
-    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setSpeechRate(0.3);
     updateUI();
   }
 

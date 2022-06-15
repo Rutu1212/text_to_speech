@@ -59,18 +59,16 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    /* IconButton(
+                    /*IconButton(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
                       onPressed: () async {
                         model.speak(model.abc);
-                        */
-                    /*model.ttsState == TtsState.playing
+                        model.ttsState == TtsState.stopped
                             ? await model.speak(model.abc)
-                            : await model.speak(model.isPause ? model.newEnd! : model.abc);*/
-                    /*
+                            : await model.speak(model.isPause ? model.newEnd! : model.speak(model.abc));
                       },
-                      icon: Icon(Icons.refresh_outlined, size: 40, color: model.ttsState == TtsState.playing ? Colors.white : Colors.black),
+                      icon: const Icon(Icons.refresh_outlined, size: 40, color: Colors.white),
                     ),*/
                   ],
                 ),
