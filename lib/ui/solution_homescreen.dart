@@ -50,7 +50,7 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                       onPressed: () async {
                         model.ttsState == TtsState.playing
                             ? await model.stop()
-                            : await model.speak(model.isPause ? model.newEnd! : model.speak(model.abc));
+                            : await model.speak(model.isPause ? model.newEnd! : model.speak(model.english));
                         setState(() {});
                       },
                       icon: Icon(
@@ -75,7 +75,38 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
               ),
               const Divider(
                 color: Colors.white,
-                height: 40,
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      onPressed: () async {
+                        model.ttsState == TtsState.stopped;
+                        model.changeLanguage
+                            ? model.ttsState == TtsState.stopped
+                                ? null
+                                : model.speakEnglish(model.english)
+                            : null;
+                        setState(() {});
+                      },
+                      child: const Text('English')),
+                  ElevatedButton(
+                      onPressed: () {
+                        model.ttsState == TtsState.stopped;
+                        model.changeLanguage
+                            ? model.ttsState == TtsState.stopped
+                                ? null
+                                : model.speakTurkish(model.turkish)
+                            : null;
+                        setState(() {});
+                      },
+                      child: const Text('Turkish')),
+                ],
+              ),
+              const Divider(
+                color: Colors.white,
+                height: 20,
               ),
             ],
           ),
