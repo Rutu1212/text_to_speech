@@ -8,10 +8,11 @@ enum TtsState { playing, stopped }
 class SolutionHomeScreenViewModel extends BaseModel {
   FlutterTts flutterTts = FlutterTts();
   String english =
-      'Description is the pattern of narrative development that aims to make vivid a place, object, character, or group. Description is one of four rhetorical modes, along with exposition, argumentation, and narration, In practice it would be difficult to write literature that drew on just one of the four basic modes.';
+      'Description is the pattern of narrative development that aims to make vivid a place, object, character, or group. Description is one of four rhetorical modes, along with exposition, argumentation, and narration, In practice it would be difficult to write literature that drew on just one of the four basic modes. ';
   String turkish =
       'Tanımlama, bir yeri, nesneyi, karakteri veya grubu canlı kılmayı amaçlayan anlatı geliştirme modelidir. Açıklama, açıklama, tartışma ve anlatımla birlikte dört retorik moddan biridir. Pratikte dört temel moddan sadece birine dayanan bir edebiyat yazmak zor olurdu.';
   String? newEnd;
+  String? newEndT;
   int pause = 0;
   int start = 0;
   int end = 0;
@@ -107,7 +108,9 @@ class SolutionHomeScreenViewModel extends BaseModel {
     await flutterTts.speak(text);
     await flutterTts.setVolume(0.5);
     await flutterTts.setSpeechRate(0.3);
-    changeLanguage = false;
+    changeLanguage = true;
+    end = 0;
+    start = 0;
     updateUI();
   }
 
@@ -117,6 +120,8 @@ class SolutionHomeScreenViewModel extends BaseModel {
     await flutterTts.setVolume(0.5);
     await flutterTts.setSpeechRate(0.3);
     changeLanguage = false;
+    end = 0;
+    start = 0;
     updateUI();
   }
 
@@ -126,10 +131,17 @@ class SolutionHomeScreenViewModel extends BaseModel {
     print("End when Stop ::$end");
     await flutterTts.stop();
     ttsState = TtsState.stopped;
+
     if (isPause) {
       newEnd = english.substring(pause + end);
     } else {
       newEnd = english.substring(end);
+    }
+
+    if (changeLanguage) {
+      newEndT = turkish.substring(pause + end);
+    } else {
+      newEndT = turkish.substring(end);
     }
     updateUI();
   }

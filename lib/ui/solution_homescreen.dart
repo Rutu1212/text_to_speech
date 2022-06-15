@@ -59,17 +59,6 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    /*IconButton(
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      onPressed: () async {
-                        model.speak(model.abc);
-                        model.ttsState == TtsState.stopped
-                            ? await model.speak(model.abc)
-                            : await model.speak(model.isPause ? model.newEnd! : model.speak(model.abc));
-                      },
-                      icon: const Icon(Icons.refresh_outlined, size: 40, color: Colors.white),
-                    ),*/
                   ],
                 ),
               ),
@@ -82,22 +71,20 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        model.ttsState == TtsState.stopped;
                         model.changeLanguage
-                            ? model.ttsState == TtsState.stopped
-                                ? null
-                                : model.speakEnglish(model.english)
+                            ? model.ttsState == TtsState.playing
+                                ? model.speakEnglish(model.english)
+                                : null
                             : null;
                         setState(() {});
                       },
                       child: const Text('English')),
                   ElevatedButton(
-                      onPressed: () {
-                        model.ttsState == TtsState.stopped;
+                      onPressed: () async {
                         model.changeLanguage
-                            ? model.ttsState == TtsState.stopped
-                                ? null
-                                : model.speakTurkish(model.turkish)
+                            ? model.ttsState == TtsState.playing
+                                ? model.speakTurkish(model.turkish)
+                                : null
                             : null;
                         setState(() {});
                       },
