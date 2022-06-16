@@ -13,6 +13,13 @@ class SolutionHomeScreen extends StatefulWidget {
 class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
   SolutionHomeScreenViewModel? model;
 
+  /*@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    model.joinString();
+  }*/
+
   @override
   Widget build(BuildContext context) {
     return BaseView<SolutionHomeScreenViewModel>(builder: ((buildContext, model, child) {
@@ -118,6 +125,7 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
     }), onModelReady: (model) async {
       this.model = model;
       model.initTts();
+      model.joinString();
     });
   }
 }

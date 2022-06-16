@@ -7,10 +7,33 @@ enum TtsState { playing, stopped }
 
 class SolutionHomeScreenViewModel extends BaseModel {
   FlutterTts flutterTts = FlutterTts();
-  String english =
-      'Description is the pattern of narrative development that aims to make vivid a place, object, character, or group. Description is one of four rhetorical modes, along with exposition, argumentation, and narration, In practice it would be difficult to write literature that drew on just one of the four basic modes. ';
-  String turkish =
-      'Tanımlama, bir yeri, nesneyi, karakteri veya grubu canlı kılmayı amaçlayan anlatı geliştirme modelidir. Açıklama, açıklama, tartışma ve anlatımla birlikte dört retorik moddan biridir. Pratikte dört temel moddan sadece birine dayanan bir edebiyat yazmak zor olurdu.';
+
+  // String english =
+  //     'Description is the pattern of narrative development that aims to make vivid or place, object, character, or group. Description is one of four rhetorical modes, along with exposition, argumentation, and narration, In practice it would be difficult to write literature that drew on just one of the four basic modes.';
+  // String turkish =
+  //     'Tanımlama, bir yeri, nesneyi, karakteri veya grubu canlı kılmayı amaçlayan anlatı geliştirme modelidir. Açıklama, açıklama, tartışma ve anlatımla birlikte dört retorik moddan biridir. Pratikte dört temel moddan sadece birine dayanan bir edebiyat yazmak zor olurdu.';
+
+  List<String> englishList = [
+    'Description is the pattern of narrative development that aims to make vivid or place, object, character, or group. Description is one of four rhetorical modes, along with exposition, argumentation, and narration, In practice it would be difficult to write literature that drew on just one of the four basic modes.',
+    'In this post, we are going to show you the array List basis of Dart or Flutter. In Dart, the array is called List. In this article, you will learn example-wise how to create and use Array in Dart or Flutter',
+    'The dissipation rate can also be estimated from less specialized instruments. Breaking internal waves, like that shown in Figure, lift dense water above light water',
+  ];
+  List<String> turkishList = [
+    'Tanımlama, bir yeri, nesneyi, karakteri veya grubu canlı kılmayı amaçlayan anlatı geliştirme modelidir. Açıklama, açıklama, tartışma ve anlatımla birlikte dört retorik moddan biridir. Pratikte dört temel moddan sadece birine dayanan bir edebiyat yazmak zor olurdu.',
+    "Bu yazıda, size Dart veya Flutter'ın dizi listesi temelini göstereceğiz. Dart'ta diziye Liste denir. Bu makalede, Dart veya Flutter'da Array'in nasıl oluşturulacağını ve kullanılacağını örnek olarak öğreneceksiniz.",
+    'Dağılma oranı, daha az uzmanlaşmış araçlardan da tahmin edilebilir. Şekil de gösterildiği gibi iç dalgaları kırmak, yoğun suyu hafif suyun üzerine kaldırır.',
+  ];
+
+  joinString() {
+    String englishJoin = englishList.join('\n');
+    String turkishJoin = turkishList.join('\n');
+    print(englishJoin);
+    print(turkishJoin);
+  }
+
+  String? englishJoin;
+  String? turkishJoin;
+
   String? newEnd;
   bool fromTurkish = false;
   int pause = 0;
