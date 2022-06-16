@@ -79,7 +79,8 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                           model.isPause = false;
                           model.start = 0;
                           model.end = 0;
-                          await model.speak(model.english);
+                          // await model.speak(model.english);
+                          model.fromTurkish ? model.stop() : model.speak(model.english);
                         }
                       },
                       child: const Text('English')),
@@ -91,7 +92,8 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                           model.isPause = false;
                           model.start = 0;
                           model.end = 0;
-                          await model.speak(model.turkish);
+                          // await model.speak(model.turkish);
+                          model.fromTurkish ? model.stop() : model.speak(model.turkish);
                         }
                       },
                       child: const Text('Turkish')),

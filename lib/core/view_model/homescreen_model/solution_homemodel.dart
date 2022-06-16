@@ -34,7 +34,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
       start = startOffset;
       end = endOffset;
       print("Start ::: $start");
-      print("Endddddd::$end");
+      print("End   ::: $end");
       updateUI();
     });
   }
@@ -83,7 +83,6 @@ class SolutionHomeScreenViewModel extends BaseModel {
   }
 
   speak(String text) async {
-    print("speak ::: ====$text======== $fromTurkish");
     if (isPause) {
       pause = pause + end;
     } else {
@@ -102,7 +101,6 @@ class SolutionHomeScreenViewModel extends BaseModel {
     isPause = true;
     await flutterTts.stop();
     ttsState = TtsState.stopped;
-    print("stop ::: ============ $fromTurkish");
     if (isPause) {
       newEnd = fromTurkish ? turkish.substring(pause + end) : english.substring(pause + end);
     } else {
