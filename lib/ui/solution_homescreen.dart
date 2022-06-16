@@ -50,7 +50,9 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                       onPressed: () async {
                         model.ttsState == TtsState.playing
                             ? await model.stop()
-                            : await model.speak(model.isPause ? model.newEnd! : model.speak(model.english));
+                            : model.fromTurkish
+                                ? await model.speak(model.isPause ? model.newEnd : model.speak(model.turkish))
+                                : await model.speak(model.isPause ? model.newEnd : model.speak(model.english));
                         setState(() {});
                       },
                       icon: Icon(
@@ -71,22 +73,20 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
+                        model.fromTurkish = false;
+                        print("model.newEnd tts state ${model.ttsState} :english:: ${model.isPause}:: ${model.newEnd}");
                         model.ttsState == TtsState.playing
-                            ? model.changeLanguage == false
-                                ? model.speakEnglish(model.english)
-                                : null
-                            : null;
-                        setState(() {});
+                            ? await model.stop()
+                            : await model.speak(model.isPause ? model.newEnd : await model.speak(model.english));
                       },
                       child: const Text('English')),
                   ElevatedButton(
                       onPressed: () async {
+                        model.fromTurkish = true;
+                        print("model. tts state ::: ${model.ttsState} newEnd  ${model.isPause}:turkish:::: ${model.newEnd}");
                         model.ttsState == TtsState.playing
-                            ? model.changeLanguage == true
-                                ? model.speakTurkish(model.turkish)
-                                : null
-                            : null;
-                        setState(() {});
+                            ? await model.stop()
+                            : await model.speak(model.isPause ? model.newEnd : await model.speak(model.turkish));
                       },
                       child: const Text('Turkish')),
                 ],

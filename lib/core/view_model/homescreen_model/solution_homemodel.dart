@@ -12,12 +12,11 @@ class SolutionHomeScreenViewModel extends BaseModel {
   String turkish =
       'Tanımlama, bir yeri, nesneyi, karakteri veya grubu canlı kılmayı amaçlayan anlatı geliştirme modelidir. Açıklama, açıklama, tartışma ve anlatımla birlikte dört retorik moddan biridir. Pratikte dört temel moddan sadece birine dayanan bir edebiyat yazmak zor olurdu.';
   String? newEnd;
-  String? newEndT;
+  bool fromTurkish = false;
   int pause = 0;
   int start = 0;
   int end = 0;
   bool isPause = false;
-  bool changeLanguage = true;
 
   TtsState ttsState = TtsState.stopped;
 
@@ -42,25 +41,20 @@ class SolutionHomeScreenViewModel extends BaseModel {
 
   textFromInput() {
     String pausedString = english.substring(0, (start + pause));
-    print(
-        "%%%%%%%%%%%%%${english.substring(start != 0 ? start + pause == start + pause ? (start + pause) : end + pause : isPause ? pause + start : 0, end + pause)}");
+    String pausedTurkishString = turkish.substring(0, (start + pause));
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: RichText(
         text: TextSpan(
           children: [
             TextSpan(
-                text: changeLanguage
-                    ? isPause == true
-                        ? pausedString
-                        : english.substring(0, start)
-                    : isPause == true
-                        ? turkish.substring(0, (start + pause))
-                        : turkish.substring(0, start),
+                text: isPause == true
+                    ? (fromTurkish ? pausedTurkishString : pausedString)
+                    : (fromTurkish ? turkish.substring(0, start) : english.substring(0, start)),
                 style: const TextStyle(color: Colors.black, fontSize: 19)),
             TextSpan(
-                text: changeLanguage
-                    ? english.substring(
+                text: fromTurkish
+                    ? turkish.substring(
                         start != 0
                             ? start + pause == start + pause
                                 ? (start + pause)
@@ -69,7 +63,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
                                 ? pause + start
                                 : 0,
                         end + pause)
-                    : turkish.substring(
+                    : english.substring(
                         start != 0
                             ? start + pause == start + pause
                                 ? (start + pause)
@@ -80,7 +74,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
                         end + pause),
                 style: const TextStyle(backgroundColor: Colors.red, fontSize: 19)),
             TextSpan(
-                text: changeLanguage ? english.substring(pause + end) : turkish.substring(pause + end),
+                text: fromTurkish ? turkish.substring(pause + end) : english.substring(pause + end),
                 style: const TextStyle(color: Colors.black, fontSize: 19)),
           ],
         ),
@@ -89,6 +83,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
   }
 
   speak(String text) async {
+    print("speak ::: ====$text======== $fromTurkish");
     if (isPause) {
       pause = pause + end;
     } else {
@@ -96,52 +91,22 @@ class SolutionHomeScreenViewModel extends BaseModel {
     }
     end = 0;
     start = 0;
-    await flutterTts.setLanguage("en-US");
+    await flutterTts.setLanguage(fromTurkish ? "tr-TR" : "en-US");
     await flutterTts.speak(text);
     await flutterTts.setVolume(0.5);
     await flutterTts.setSpeechRate(0.3);
-    updateUI();
-  }
-
-  speakEnglish(String text) async {
-    await flutterTts.setLanguage("en-US");
-    await flutterTts.speak(text);
-    await flutterTts.setVolume(0.5);
-    await flutterTts.setSpeechRate(0.3);
-    changeLanguage = true;
-    end = 0;
-    start = 0;
-    updateUI();
-  }
-
-  speakTurkish(String text) async {
-    await flutterTts.setLanguage("tr-TR");
-    await flutterTts.speak(text);
-    await flutterTts.setVolume(0.5);
-    await flutterTts.setSpeechRate(0.3);
-    changeLanguage = false;
-    end = 0;
-    start = 0;
     updateUI();
   }
 
   stop() async {
     isPause = true;
-    print("Start When Stop::: $start");
-    print("End when Stop ::$end");
     await flutterTts.stop();
     ttsState = TtsState.stopped;
-
+    print("stop ::: ============ $fromTurkish");
     if (isPause) {
-      newEnd = english.substring(pause + end);
+      newEnd = fromTurkish ? turkish.substring(pause + end) : english.substring(pause + end);
     } else {
-      newEnd = english.substring(end);
-    }
-
-    if (changeLanguage) {
-      newEndT = turkish.substring(pause + end);
-    } else {
-      newEndT = turkish.substring(end);
+      newEnd = fromTurkish ? turkish.substring(end) : english.substring(end);
     }
     updateUI();
   }
