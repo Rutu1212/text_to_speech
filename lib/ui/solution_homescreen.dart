@@ -49,7 +49,7 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                       highlightColor: Colors.transparent,
                       onPressed: () async {
                         model.ttsState == TtsState.playing
-                            ? await model.stop()
+                            ? model.stop()
                             : model.fromTurkish
                                 ? await model.speak(model.isPause ? model.newEnd : model.speak(model.turkish))
                                 : await model.speak(model.isPause ? model.newEnd : model.speak(model.english));
@@ -75,12 +75,16 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                       onPressed: () async {
                         model.fromTurkish = false;
                         if (model.ttsState == TtsState.playing || model.ttsState == TtsState.stopped) {
-                          await model.flutterTts.stop();
+                          // await model.flutterTts.stop();
                           model.isPause = false;
                           model.start = 0;
                           model.end = 0;
                           // await model.speak(model.english);
-                          model.fromTurkish ? model.stop() : model.speak(model.english);
+                          if (model.isPause == true) {
+                            model.ttsState == TtsState.stopped ? model.stop() : model.speak(model.english);
+                          } else if (model.isPause == false) {
+                            model.ttsState == TtsState.playing ? model.speak(model.english) : model.stop();
+                          }
                         }
                       },
                       child: const Text('English')),
@@ -88,12 +92,16 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                       onPressed: () async {
                         model.fromTurkish = true;
                         if (model.ttsState == TtsState.playing || model.ttsState == TtsState.stopped) {
-                          await model.flutterTts.stop();
+                          // await model.flutterTts.stop();
                           model.isPause = false;
                           model.start = 0;
                           model.end = 0;
                           // await model.speak(model.turkish);
-                          model.fromTurkish ? model.stop() : model.speak(model.turkish);
+                          if (model.isPause == true) {
+                            model.ttsState == TtsState.stopped ? model.stop() : model.speak(model.turkish);
+                          } else if (model.isPause == false) {
+                            model.ttsState == TtsState.playing ? model.speak(model.turkish) : model.stop();
+                          }
                         }
                       },
                       child: const Text('Turkish')),
