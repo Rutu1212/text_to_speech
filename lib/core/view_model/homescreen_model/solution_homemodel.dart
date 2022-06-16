@@ -33,8 +33,6 @@ class SolutionHomeScreenViewModel extends BaseModel {
     flutterTts.setProgressHandler((String text, int startOffset, int endOffset, String word) {
       start = startOffset;
       end = endOffset;
-      print("Start ::: $start");
-      print("End   ::: $end");
       updateUI();
     });
   }
