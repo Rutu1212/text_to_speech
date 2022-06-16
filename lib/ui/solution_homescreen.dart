@@ -74,19 +74,25 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                   ElevatedButton(
                       onPressed: () async {
                         model.fromTurkish = false;
-                        print("model.newEnd tts state ${model.ttsState} :english:: ${model.isPause}:: ${model.newEnd}");
-                        model.ttsState == TtsState.playing
-                            ? await model.stop()
-                            : await model.speak(model.isPause ? model.newEnd : await model.speak(model.english));
+                        if (model.ttsState == TtsState.playing || model.ttsState == TtsState.stopped) {
+                          await model.flutterTts.stop();
+                          model.isPause = false;
+                          model.start = 0;
+                          model.end = 0;
+                          await model.speak(model.english);
+                        }
                       },
                       child: const Text('English')),
                   ElevatedButton(
                       onPressed: () async {
                         model.fromTurkish = true;
-                        print("model. tts state ::: ${model.ttsState} newEnd  ${model.isPause}:turkish:::: ${model.newEnd}");
-                        model.ttsState == TtsState.playing
-                            ? await model.stop()
-                            : await model.speak(model.isPause ? model.newEnd : await model.speak(model.turkish));
+                        if (model.ttsState == TtsState.playing || model.ttsState == TtsState.stopped) {
+                          await model.flutterTts.stop();
+                          model.isPause = false;
+                          model.start = 0;
+                          model.end = 0;
+                          await model.speak(model.turkish);
+                        }
                       },
                       child: const Text('Turkish')),
                 ],
