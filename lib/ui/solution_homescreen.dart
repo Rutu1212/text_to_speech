@@ -71,8 +71,8 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        model.changeLanguage
-                            ? model.ttsState == TtsState.playing
+                        model.ttsState == TtsState.playing
+                            ? model.changeLanguage == false
                                 ? model.speakEnglish(model.english)
                                 : null
                             : null;
@@ -81,8 +81,8 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                       child: const Text('English')),
                   ElevatedButton(
                       onPressed: () async {
-                        model.changeLanguage
-                            ? model.ttsState == TtsState.playing
+                        model.ttsState == TtsState.playing
+                            ? model.changeLanguage == true
                                 ? model.speakTurkish(model.turkish)
                                 : null
                             : null;
