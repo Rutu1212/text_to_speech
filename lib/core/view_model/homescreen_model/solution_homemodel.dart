@@ -15,16 +15,16 @@ class SolutionHomeScreenViewModel extends BaseModel {
 
   List<String> englishList = [
     'Description is the pattern of narrative development that aims to make vivid or place, object, character, or group. Description is one of four rhetorical modes, along with exposition, argumentation, and narration, In practice it would be difficult to write literature that drew on just one of the four basic modes.',
-    'In this post, we are going to show you the array List basis of Dart or Flutter. In Dart, the array is called List. In this article, you will learn example-wise how to create and use Array in Dart or Flutter',
-    'The dissipation rate can also be estimated from less specialized instruments. Breaking internal waves, like that shown in Figure, lift dense water above light water',
+    'In this post, we are going to show you the array List basis of Dart or Flutter. In Dart, the array is called List. In this article, you will learn example-wise how to create and use Array in Dart or Flutter.',
+    'The dissipation rate can also be estimated from less specialized instruments.',
   ];
   List<String> turkishList = [
     'Tanımlama, bir yeri, nesneyi, karakteri veya grubu canlı kılmayı amaçlayan anlatı geliştirme modelidir. Açıklama, açıklama, tartışma ve anlatımla birlikte dört retorik moddan biridir. Pratikte dört temel moddan sadece birine dayanan bir edebiyat yazmak zor olurdu.',
     "Bu yazıda, size Dart veya Flutter'ın dizi listesi temelini göstereceğiz. Dart'ta diziye Liste denir. Bu makalede, Dart veya Flutter'da Array'in nasıl oluşturulacağını ve kullanılacağını örnek olarak öğreneceksiniz.",
-    'Dağılma oranı, daha az uzmanlaşmış araçlardan da tahmin edilebilir. Şekil de gösterildiği gibi iç dalgaları kırmak, yoğun suyu hafif suyun üzerine kaldırır.',
+    'Dağılma oanı, daha az uzmanlaşmış aralardan da tahmin edilebilir. Şekil de göstrildiği gibi iç dalgaları kırmak, yoğun suyu.',
   ];
 
-  joinString() {
+  /*joinString() {
     String englishJoin = englishList.join('\n');
     String turkishJoin = turkishList.join('\n');
     print(englishJoin);
@@ -32,7 +32,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
   }
 
   String? englishJoin;
-  String? turkishJoin;
+  String? turkishJoin;*/
 
   String? newEnd;
   bool fromTurkish = false;
@@ -61,8 +61,18 @@ class SolutionHomeScreenViewModel extends BaseModel {
   }
 
   textFromInput() {
-    String pausedString = english.substring(0, (start + pause));
-    String pausedTurkishString = turkish.substring(0, (start + pause));
+    String pausedEnglishString = englishList.join('\n').substring(0, (start + pause));
+    String pausedTurkishString = turkishList.join('\n').substring(0, (start + pause));
+    print(englishList.join('\n').substring(
+        start != 0
+            ? start + pause == start + pause
+                ? (start + pause)
+                : end + pause
+            : isPause
+                ? pause + start
+                : 0,
+        end + pause));
+    print('+++++ $start =====  $end');
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: RichText(
@@ -70,12 +80,12 @@ class SolutionHomeScreenViewModel extends BaseModel {
           children: [
             TextSpan(
                 text: isPause == true
-                    ? (fromTurkish ? pausedTurkishString : pausedString)
-                    : (fromTurkish ? turkish.substring(0, start) : english.substring(0, start)),
+                    ? (fromTurkish ? pausedTurkishString : pausedEnglishString)
+                    : (fromTurkish ? turkishList.join('\n').substring(0, start) : englishList.join('\n').substring(0, start)),
                 style: const TextStyle(color: Colors.black, fontSize: 19)),
             TextSpan(
                 text: fromTurkish
-                    ? turkish.substring(
+                    ? turkishList.join('\n').substring(
                         start != 0
                             ? start + pause == start + pause
                                 ? (start + pause)
@@ -84,7 +94,8 @@ class SolutionHomeScreenViewModel extends BaseModel {
                                 ? pause + start
                                 : 0,
                         end + pause)
-                    : english.substring(
+                    : englishList.join('\n').substring(
+                        /*start + pause, end + pause*/
                         start != 0
                             ? start + pause == start + pause
                                 ? (start + pause)
@@ -95,7 +106,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
                         end + pause),
                 style: const TextStyle(backgroundColor: Colors.red, fontSize: 19)),
             TextSpan(
-                text: fromTurkish ? turkish.substring(pause + end) : english.substring(pause + end),
+                text: fromTurkish ? turkishList.join('\n').substring(pause + end) : englishList.join('\n').substring(pause + end),
                 style: const TextStyle(color: Colors.black, fontSize: 19)),
           ],
         ),
@@ -114,7 +125,7 @@ class SolutionHomeScreenViewModel extends BaseModel {
     await flutterTts.setLanguage(fromTurkish ? "tr-TR" : "en-US");
     await flutterTts.speak(text);
     await flutterTts.setVolume(0.5);
-    await flutterTts.setSpeechRate(0.3);
+    await flutterTts.setSpeechRate(0.5);
     updateUI();
   }
 
@@ -123,9 +134,9 @@ class SolutionHomeScreenViewModel extends BaseModel {
     await flutterTts.stop();
     ttsState = TtsState.stopped;
     if (isPause) {
-      newEnd = fromTurkish ? turkish.substring(pause + end) : english.substring(pause + end);
+      newEnd = fromTurkish ? turkishList.join('\n').substring(pause + end) : englishList.join('\n').substring(pause + end);
     } else {
-      newEnd = fromTurkish ? turkish.substring(end) : english.substring(end);
+      newEnd = fromTurkish ? turkishList.join('\n').substring(end) : englishList.join('\n').substring(end);
     }
     updateUI();
   }

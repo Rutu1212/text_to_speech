@@ -13,13 +13,6 @@ class SolutionHomeScreen extends StatefulWidget {
 class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
   SolutionHomeScreenViewModel? model;
 
-  /*@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    model.joinString();
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return BaseView<SolutionHomeScreenViewModel>(builder: ((buildContext, model, child) {
@@ -58,8 +51,8 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                         model.ttsState == TtsState.playing
                             ? model.stop()
                             : model.fromTurkish
-                                ? await model.speak(model.isPause ? model.newEnd : model.speak(model.turkish))
-                                : await model.speak(model.isPause ? model.newEnd : model.speak(model.english));
+                                ? await model.speak(model.isPause ? model.newEnd : model.speak(model.turkishList.join('\n')))
+                                : await model.speak(model.isPause ? model.newEnd : model.speak(model.englishList.join('\n')));
                         setState(() {});
                       },
                       icon: Icon(
@@ -88,9 +81,9 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                           model.end = 0;
                           // await model.speak(model.english);
                           if (model.isPause == true) {
-                            model.ttsState == TtsState.stopped ? model.stop() : model.speak(model.english);
+                            model.ttsState == TtsState.stopped ? model.stop() : model.speak(model.englishList.join('\n'));
                           } else if (model.isPause == false) {
-                            model.ttsState == TtsState.playing ? model.speak(model.english) : model.stop();
+                            model.ttsState == TtsState.playing ? model.speak(model.englishList.join('\n')) : model.stop();
                           }
                         }
                       },
@@ -105,9 +98,9 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
                           model.end = 0;
                           // await model.speak(model.turkish);
                           if (model.isPause == true) {
-                            model.ttsState == TtsState.stopped ? model.stop() : model.speak(model.turkish);
+                            model.ttsState == TtsState.stopped ? model.stop() : model.speak(model.turkishList.join('\n'));
                           } else if (model.isPause == false) {
-                            model.ttsState == TtsState.playing ? model.speak(model.turkish) : model.stop();
+                            model.ttsState == TtsState.playing ? model.speak(model.turkishList.join('\n')) : model.stop();
                           }
                         }
                       },
@@ -125,7 +118,6 @@ class _SolutionHomeScreenState extends State<SolutionHomeScreen> {
     }), onModelReady: (model) async {
       this.model = model;
       model.initTts();
-      model.joinString();
     });
   }
 }
